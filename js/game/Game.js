@@ -28,7 +28,8 @@ Global.Game.prototype.create = function ()
 	this.enemyGroup = Global.game.add.physicsGroup();
 	this.Player = new Player();
 	this.Enemy = new Enemy();
-
+	this.SubEnemy = new SubEnemy();
+	
 	this.Player.create(
 		this.playerGroup,
 		7 * 64,
@@ -36,6 +37,11 @@ Global.Game.prototype.create = function ()
 	);
 	
 	this.Enemy.create(
+		this.enemyGroup,
+		7 * 64,
+		8 * 64
+	);
+	this.SubEnemy.create(
 		this.enemyGroup,
 		7 * 64,
 		8 * 64
@@ -64,6 +70,7 @@ Global.Game.prototype.preRender = function ()
 
 	this.Player.preRender();
 	this.Enemy.preRender();
+	this.SubEnemy.preRender();
 };
 
 Global.Game.prototype.update = function ()
@@ -72,6 +79,7 @@ Global.Game.prototype.update = function ()
 
 	this.Player.update();
 	this.Enemy.update();
+	this.SubEnemy.update();
 	if ( this.Player.sprite.y > Global.game.world.bounds.height )
 	{
 		this.state.start( 'Game' );
@@ -84,9 +92,11 @@ Global.Game.prototype.update = function ()
 Global.Game.prototype.handleCollisions = function ()
 {
 	this.physics.arcade.collide( this.Player.sprite, this.Stage.stationary );
-        this.physics.arcade.collide( this.Enemy.sprite, this.Stage.stationary );
+    this.physics.arcade.collide( this.Enemy.sprite, this.Stage.stationary );
+    this.physics.arcade.collide( this.SubEnemy.sprite, this.Stage.stationary );
 	this.physics.arcade.collide( this.Player.sprite, this.Stage.clouds, this.customSep, null, this );
 	this.physics.arcade.collide( this.Enemy.sprite, this.Stage.clouds, this.customSep, null, this );
+	this.physics.arcade.collide( this.SubEnemy.sprite, this.Stage.clouds, this.customSep, null, this );
 	Global.game.physics.arcade.overlap( this.Player.sprite, this.Stage.vines, function( playerSprite, vinesSprite ) {
 		playerSprite.owner.onVine();
 	}, null, this );
@@ -124,5 +134,6 @@ Global.Game.prototype.render = function ()
 {
 	this.Player.render();
 	this.Enemy.render();
+	this.SubEnemy.render();
 	this.Stage.render();
 };
