@@ -27,10 +27,19 @@ Global.Game.prototype.create = function ()
 	Global.game.world.setBounds( 0, 0, this.Stage.width*64, this.Stage.height*64 );
 
 	this.playerGroup = Global.game.add.physicsGroup();
+	this.enemyGroup = Global.game.add.physicsGroup();
 	this.Player = new Player();
+	this.Enemy = new Enemy();
+
 	this.Player.create(
 		this.playerGroup,
 		7 * 64,
+		60 * 64
+	);
+	
+	this.Enemy.create(
+		this.enemyGroup,
+		7 * 64 + 32,
 		60 * 64
 	);
 
@@ -55,6 +64,7 @@ Global.Game.prototype.preRender = function ()
 	}
 
 	this.Player.preRender();
+	this.Enemy.preRender();
 };
 
 Global.Game.prototype.update = function ()
@@ -62,7 +72,7 @@ Global.Game.prototype.update = function ()
 	this.handleCollisions();
 
 	this.Player.update();
-
+	this.Enemy.update();
 	if ( this.Player.sprite.y > Global.game.world.bounds.height )
 	{
 		this.state.start( 'Game' );
@@ -114,5 +124,6 @@ Global.Game.prototype.customSep = function ( playerSprite, platformSprite )
 Global.Game.prototype.render = function ()
 {
 	this.Player.render();
+	this.Enemy.render();
 	this.Stage.render();
 };
