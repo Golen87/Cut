@@ -1,0 +1,13 @@
+body {
+	text-align: center;
+	overflow: hidden;
+}
+
+#game {
+	width: 100%;
+}
+
+canvas {
+	display: block;
+	margin: auto;
+}
