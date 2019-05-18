@@ -25,7 +25,7 @@ Enemy.prototype.create = function ( group, x, y )
 	this.willClimb = false;
 	this.isClimbing = false;
 	this.prevVel = new Phaser.Point(0,0);
-
+	this.facingRight = true;
 	this.jumpTimer = 0;
 	this.step = 0;
 };
@@ -63,10 +63,13 @@ Enemy.prototype.update = function ()
 
 	// todo: replace with better AI
 	var p = new Phaser.Point( 0, 0 );
-	var left = Math.random() >= 0.5;
-	var right = !left
-	var down = Math.random() >= 0.5;
-	var up = !down
+	if (Math.random() <= 0.05) { 
+		this.facingRight = ! this.facingRight;
+	}
+	var left = !this.facingRight;
+	var right = this.facingRight;
+	var up = false;
+	var down = false;
 	var onlyDown = down && !left && !right;
 	if ( left )		p.x -= 1;
 	if ( right )	p.x += 1;

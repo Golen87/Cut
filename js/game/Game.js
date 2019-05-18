@@ -37,8 +37,8 @@ Global.Game.prototype.create = function ()
 	
 	this.Enemy.create(
 		this.enemyGroup,
-		7 * 64 + 32,
-		60 * 64
+		7 * 64,
+		8 * 64
 	);
 
 	this.camera.follow( this.Player.sprite );
@@ -52,6 +52,7 @@ Global.Game.prototype.create = function ()
 	Global.game.world.bringToTop( this.Stage.balloons );
 	Global.game.world.bringToTop( this.Stage.goal );
 	Global.game.world.bringToTop( this.playerGroup );
+	Global.game.world.bringToTop( this.enemyGroup );
 };
 
 Global.Game.prototype.preRender = function ()
@@ -83,9 +84,9 @@ Global.Game.prototype.update = function ()
 Global.Game.prototype.handleCollisions = function ()
 {
 	this.physics.arcade.collide( this.Player.sprite, this.Stage.stationary );
-
+        this.physics.arcade.collide( this.Enemy.sprite, this.Stage.stationary );
 	this.physics.arcade.collide( this.Player.sprite, this.Stage.clouds, this.customSep, null, this );
-
+	this.physics.arcade.collide( this.Enemy.sprite, this.Stage.clouds, this.customSep, null, this );
 	Global.game.physics.arcade.overlap( this.Player.sprite, this.Stage.vines, function( playerSprite, vinesSprite ) {
 		playerSprite.owner.onVine();
 	}, null, this );
