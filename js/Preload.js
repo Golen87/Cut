@@ -1,76 +1,65 @@
-var Global = Global || {};
-Global.Preload = function() {};
+var Kid = Kid || {};
 
-Global.Preload.prototype = {
+//loading the game assets
+Kid.Preload = function() {};
+
+Kid.Preload.prototype = {
 	preload: function () {
 		
-		this.game.stage.backgroundColor = '#33333A';
+		this.game.stage.backgroundColor = '#eeeeee';
 
-		// Load game assets
-		
-		this.load.bitmapFont( 'Simplisicky', 'assets/fonts/Simplisicky/font.png', 'assets/fonts/Simplisicky/font.fnt' ); // 128
 
-		this.load.image( 'tile', 'assets/sprites/tile.png' );
-		this.load.image( 'select', 'assets/sprites/select.png' );
-		this.load.image( 'glow', 'assets/sprites/glow.png' );
-		this.load.image( 'torchlight', 'assets/sprites/torchlight.png' );
+		/* Fonts */
+
+		this.load.bitmapFont( 'Balsamiq', 'assets/fonts/balsamiq_regular.png', 'assets/fonts/balsamiq_regular.fnt' );
+		this.load.bitmapFont( 'BalsamiqBold', 'assets/fonts/balsamiq_bold.png', 'assets/fonts/balsamiq_bold.fnt' );
+
+
+		/* Sprites */
+
+		this.load.image( 'walls', 'assets/rooms/walls.png' );
+
+		this.load.spritesheet( 'kid', 'assets/sprites/kid.png', 48, 96 );
+
+		this.load.spritesheet( 'balloon', 'assets/sprites/balloon.png', 48, 96 );
+
+		this.load.image( 'tree_s', 'assets/sprites/tree_short.png' );
+		this.load.image( 'tree_m', 'assets/sprites/tree_medium.png' );
+		this.load.image( 'tree_l', 'assets/sprites/tree_long.png' );
+		this.load.image( 'leaves', 'assets/sprites/leaves.png' );
 
 		this.load.image( 'sky', 'assets/sprites/sky.png' );
-		this.load.image( 'ground', 'assets/sprites/platform.png' );
-		this.load.image( 'star', 'assets/sprites/star.png' );
-		this.load.image( 'bomb', 'assets/sprites/bomb.png' );
-		this.load.spritesheet( 'dude', 'assets/sprites/dude.png', 32, 48 );
+		this.load.spritesheet( 'cloud', 'assets/sprites/cloud.png', 120, 46 );
 
-		//this.load.spritesheet( 'player', 'assets/sprites/player.png', 128, 256 );
-		//this.load.spritesheet( 'ground', 'assets/sprites/ground.png', 128, 128 );
-		//this.load.spritesheet( 'grass_edge', 'assets/sprites/grass-edge.png', 64, 64 );
-		//this.load.spritesheet( 'soil', 'assets/sprites/soil.png', 128, 256 );
-		//this.load.spritesheet( 'shrub', 'assets/sprites/shrub.png', 128, 256 );
-		//this.load.spritesheet( 'bush', 'assets/sprites/bush.png', 384, 256 );
-		//this.load.spritesheet( 'tomato', 'assets/sprites/tomato.png', 128, 256 );
-		//this.load.spritesheet( 'items', 'assets/sprites/items.png', 128, 128 );
 
-		//this.load.audio( 'music', 'assets/sounds/Music.wav' );
-		//this.load.audio( 'ambience', 'assets/sounds/Ambience.ogg' );
+		/* Audio */
 
-		//this.load.audio( 'walking_grass', 'assets/sounds/Walking_Grass.ogg' );
-		//this.load.audio( 'walking_dirt', 'assets/sounds/Walking_Dirt.ogg' );
-		//this.load.audio( 'menu_inventory', 'assets/sounds/Menu_Inventory.ogg' );
-		//this.load.audio( 'digging_dirt', 'assets/sounds/Digging_Dirt.ogg' ); // !!!!!!!
-		//this.load.audio( 'planting_seed', 'assets/sounds/Planting_Seed.ogg' );
-		//this.load.audio( 'grow_pop', 'assets/sounds/Grow_Pop.ogg' );
-		//this.load.audio( 'harvest_tomato', 'assets/sounds/Harvest_Tomato.ogg' ); // !!!!!!!!!
-		//this.load.audio( 'watering_crops', 'assets/sounds/Watering_Crops.ogg' );
-		//this.load.audio( 'scythe_swing', 'assets/sounds/Scythe_Swing.ogg' );
-		//this.load.audio( 'error', 'assets/sounds/Error.ogg' );
+		this.load.audio( 'music', 'assets/sounds/music.ogg' );
+		this.load.audio( 'jump', 'assets/sounds/jump.ogg' );
+		this.load.audio( 'land', 'assets/sounds/land.wav' );
+		this.load.audio( 'skid', 'assets/sounds/skid.wav' );
+		this.load.audio( 'climb1', 'assets/sounds/climb1.wav' );
+		this.load.audio( 'climb2', 'assets/sounds/climb2.wav' );
+		this.load.audio( 'pop', 'assets/sounds/pop.ogg' );
 
 
 		// Loading progress bar
-		var scale = 8;
+		var scale = 4;
 		var x = this.game.world.centerX - this.game.cache.getImage( 'preloader-bar' ).width / 2 * scale;
 		var y = this.game.world.centerY;
 		var progressBg = this.game.add.sprite( x, y, 'preloader-bar' );
 		var progressFg = this.game.add.sprite( x, y, 'preloader-bar' );
+		progressBg.tint = 0x42A5F5;
+		progressBg.anchor.set( 0, 0.5 );
+		progressFg.anchor.set( 0, 0.5 );
 		progressBg.scale.set( scale );
-		progressBg.anchor.setTo( 0, 0.5 );
 		progressFg.scale.set( scale );
-		progressFg.anchor.setTo( 0, 0.5 );
 		this.game.load.setPreloadSprite( progressFg );
-		this.game.load.onFileComplete.add( this.fileComplete, this );
-	},
-	setup: function () {
-		Global.Audio = new AudioManager();
-		Global.Light = new LightManager();
-		Global.Gui = new GuiManager();
-		Global.Particle = new ParticleManager();
+
 	},
 	create: function () {
-		this.setup();
+		Kid.Audio = new AudioManager();
 
-		this.camera.fade(0xFFFFFF, 200);
-		this.time.events.add( 210, function() {
-			this.state.start( 'Game' );
-		}, this);
-	},
-	fileComplete: function ( progress, cacheKey, success, totalLoaded, totalFiles ) {}
+		this.state.start( 'MainMenu', Phaser.Plugin.StateTransition.Out.ScaleUp );
+	}
 };

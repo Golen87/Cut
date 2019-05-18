@@ -1,39 +1,22 @@
-var Global = Global || {};
+var Kid = Kid || {};
 
-const TILE_SIZE = 128;
-const ROOM_WIDTH = 12;
-const ROOM_HEIGHT = 10;
-const SCREEN_WIDTH = ROOM_WIDTH * TILE_SIZE;
-const SCREEN_HEIGHT = ROOM_HEIGHT * TILE_SIZE;
+var SCREEN_WIDTH = 64*14;
+var SCREEN_HEIGHT = 64*10;
+Kid.game = new Phaser.Game( SCREEN_WIDTH, SCREEN_HEIGHT, Phaser.CANVAS );
 
-var config = {
-	width: SCREEN_WIDTH,
-	height: SCREEN_HEIGHT,
-	renderer: Phaser.CANVAS,
-	parent: "Cut",
-	state: null,
-	transparent: false,
-	antialias: true,
-	physicsConfig: null,
-}
+Kid.game.state.add( 'Boot', Kid.Boot );
+Kid.game.state.add( 'Preload', Kid.Preload );
+Kid.game.state.add( 'MainMenu', Kid.MainMenu );
+Kid.game.state.add( 'Game', Kid.Game );
+Kid.game.state.add( 'Credits', Kid.Credits );
 
-Global.game = new Phaser.Game( config );
+Kid.game.state.start( 'Boot' );
 
-Global.game.state.add( 'Boot', Global.Boot );
-Global.game.state.add( 'Preload', Global.Preload );
-Global.game.state.add( 'MainMenu', Global.MainMenu );
-Global.game.state.add( 'Game', Global.Game );
-Global.game.state.add( 'Credits', Global.Credits );
+Kid.debug = false;
 
-Global.game.state.start( 'Boot' );
-
-Global.input = {};
-Global.inputScale = new Phaser.Point( 1, 1 );
-Global.inputOffset = new Phaser.Point( 0, 0 );
-
-Global.paused = false;
-
-/* Options */
-Global.music = 0.4;
-Global.ambience = 0.4;
-Global.sound = 0.8;
+var RED = 'rgba(255,0,0,0.4)';
+var YELLOW = 'rgba(255,255,0,0.4)';
+var GREEN = 'rgba(0,255,0,0.4)';
+var CYAN = 'rgba(0,255,255,0.4)';
+var BLUE = 'rgba(0,0,255,0.4)';
+var PURPLE = 'rgba(255,0,255,0.4)';

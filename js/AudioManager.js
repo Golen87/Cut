@@ -1,77 +1,100 @@
+
+// Constructor
 function AudioManager()
 {
 	this.sounds = {};
 
-	/*
-	var name = 'walking_grass';
-	var vol = 0.2;
-	this.sounds[name] = {};
-	this.sounds[name].sound = Global.game.add.audio( name );
-	this.sounds[name].sound.addMarker( '1', 0.000, 0.42, vol );
-	this.sounds[name].sound.addMarker( '2', 0.460, 0.42, vol );
-	this.sounds[name].sound.addMarker( '3', 0.920, 0.42, vol );
-	this.sounds[name].sound.addMarker( '4', 1.380, 0.42, vol );
-	this.sounds[name].sound.addMarker( '5', 1.840, 0.42, vol );
-	this.sounds[name].sound.addMarker( '6', 2.300, 0.42, vol );
-	this.sounds[name].markers = ['1', '2', '3', '4', '5', '6'];
+	this.init();
+};
+
+AudioManager.prototype.init = function ()
+{
+	//addMarker(name, start, duration, volume, loop)
+
+	var masterVol = 1.0;
 
 	var name = 'music';
-	var vol = Global.music;
+	var vol = 0.5 * masterVol;
 	this.sounds[name] = {};
-	this.sounds[name].sound = Global.game.add.audio( name );
-	this.sounds[name].sound.volume = vol*0.8;
-	this.sounds[name].sound.loop = true;
+	this.sounds[name].sound = Kid.game.add.audio( name, vol );
 
-	var name = 'ambience';
-	var vol = Global.ambience;
+	var name = 'jump';
+	var vol = 0.2 * masterVol;
 	this.sounds[name] = {};
-	this.sounds[name].sound = Global.game.add.audio( name );
-	this.sounds[name].sound.volume = vol*0.1;
-	this.sounds[name].sound.loop = true;
-	*/
+	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+
+	var name = 'land';
+	var vol = 0.4 * masterVol;
+	this.sounds[name] = {};
+	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+
+	var name = 'skid';
+	var vol = 0.2 * masterVol;
+	this.sounds[name] = {};
+	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+
+	var name = 'climb1';
+	var vol = 0.4 * masterVol;
+	this.sounds[name] = {};
+	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+
+	var name = 'climb2';
+	var vol = 0.4 * masterVol;
+	this.sounds[name] = {};
+	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+
+	var name = 'pop';
+	var vol = 0.4 * masterVol;
+	this.sounds[name] = {};
+	this.sounds[name].sound = Kid.game.add.audio( name, vol );
 };
 
 AudioManager.prototype.getMarkers = function ( name, marker=null )
 {
-	if ( marker ) {
-		if ( this.sounds[name].markers ) {
-			return this.sounds[name].markers[marker];
-		}
-		else {
-			return [marker];
-		}
-	}
-	else {
+	if ( marker )
+		return this.sounds[name].markers[marker];
+	else
 		return this.sounds[name].markers;
-	}
 };
 
 AudioManager.prototype.play = function ( name, marker=null )
 {
-	if ( !Global.sound )
-		return;
-
-	var vol = this.sounds[name].sound.volume;
-	var index = '';
 	var markers = this.getMarkers( name, marker );
 	if ( markers )
 	{
-		do {
-			index = markers.choice();
+		do
+		{
+			var index = markers.choice();
 		}
 		while (
-			this.sounds[name].lastPlayed == index && markers.length > 1
-		);
+			this.sounds[name].lastPlayed == index && markers.length > 1 );
 
 		this.sounds[name].lastPlayed = index;
-		vol = this.sounds[name].sound.markers[index]['volume'];
+		this.sounds[name].sound.play( index );
 	}
-
-	this.sounds[name].sound.play( index, 0, Global.sound * vol );
+	else
+	{
+		this.sounds[name].sound.play();
+	}
 };
 
-AudioManager.prototype.updateMusic = function ()
+AudioManager.prototype.loop = function ( name, marker=null )
 {
-	//this.sounds['music'].sound.volume = Global.music*0.8;
-	//this.sounds['ambience'].sound.volume = Global.ambience*0.1;
+	var markers = this.getMarkers( name, marker );
+	if ( markers )
+	{
+		do
+		{
+			var index = markers.choice();
+		}
+		while (
+			this.sounds[name].lastPlayed == index && markers.length > 1 );
+
+		this.sounds[name].lastPlayed = index;
+		this.sounds[name].sound.loopFull( index );
+	}
+	else
+	{
+		this.sounds[name].sound.loopFull();
+	}
 };
