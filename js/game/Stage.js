@@ -5,17 +5,19 @@ function Stage ()
 
 Stage.prototype.create = function ( x, y )
 {
+	var level = 'test_room';
+
 	this.stationary = Global.game.add.physicsGroup();
 	this.vines = Global.game.add.physicsGroup();
 	this.clouds = Global.game.add.physicsGroup();
 	this.balloons = Global.game.add.physicsGroup();
 	this.goal = Global.game.add.physicsGroup();
 
-	this.width = Global.game.cache.getImage( 'walls' ).width;
-	this.height = Global.game.cache.getImage( 'walls' ).height;
+	this.width = Global.game.cache.getImage( level ).width;
+	this.height = Global.game.cache.getImage( level ).height;
 
 	this.tileMap = [...Array( this.height ).keys()].map( i => Array( this.width ) );
-	this.makePixelMap( 'walls' );
+	this.makePixelMap( level );
 };
 
 

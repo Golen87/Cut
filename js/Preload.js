@@ -18,6 +18,7 @@ Global.Preload.prototype = {
 		/* Sprites */
 
 		this.load.image( 'walls', 'assets/rooms/walls.png' );
+		this.load.image( 'test_room', 'assets/rooms/test_room.png' );
 
 		this.load.spritesheet( 'kid', 'assets/sprites/kid.png', 48, 96 );
 

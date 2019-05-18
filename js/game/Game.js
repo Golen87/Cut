@@ -12,8 +12,6 @@ Global.Game.prototype.create = function ()
 
 	//Global.Audio.loop( 'music' );
 
-	//this.entities = Global.game.add.group();
-
 	this.skyGroup = Global.game.add.physicsGroup();	
 	this.sky = this.skyGroup.create( 0, 0, 'sky' );
 	this.sky.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
@@ -31,7 +29,7 @@ Global.Game.prototype.create = function ()
 	this.Player.create(
 		this.playerGroup,
 		7 * 64,
-		60 * 64
+		8 * 64
 	);
 
 	this.camera.follow( this.Player.sprite );
