@@ -4,9 +4,6 @@ class ExampleScene1 extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('cat', 'assets/images/cat.jpeg');
-		this.load.image('circle', 'assets/images/circle.png');
-		this.load.spritesheet( 'items', 'assets/images/items.png', { frameWidth: 16, frameHeight: 16 });
 	}
 
 	create() {

@@ -4,7 +4,6 @@ class ExampleScene3 extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.audio('pop', [ 'assets/audio/pop.ogg', 'assets/audio/pop.mp3' ] );
 	}
 
 	create() {

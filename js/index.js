@@ -15,6 +15,8 @@ var config = {
 		}
 	},
 	scene: [
+		Preload,
+		Platformer,
 		ExampleScene1,
 		ExampleScene2,
 		ExampleScene3,
