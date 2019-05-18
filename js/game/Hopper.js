@@ -1,23 +1,27 @@
-function SubEnemy()
+function Hopper()
 {
-
 }
-SubEnemy.prototype.create = function( group, x, y )
+
+Hopper.prototype.create = function( group, x, y )
 {
 	this.sprite = group.create( x, y, 'kid2', 0 );
 	Global.game.physics.arcade.enable( this.sprite, Phaser.Physics.ARCADE );
 	this.setVars( group, x, y );
-	this.right = true;
-	
+	this.right = true;	
 	this.setupAnimation();
 }
-SubEnemy.prototype.update = function ()
+
+Hopper.prototype.update = function ()
 {
-	if (Math.random() <= 0.05) { 
-		this.right = !this.right;
+	if ( Math.random() <= 0.08 && this.onFloor ) { 
+		this.willJump = true;
+		this.left = Math.random() >= 0.5 ? true : false;
 	}
-	this.left = !this.right;
-	this.up = false;
+
+	if ( this.willJump ) this.jump();
+
+
+	this.right = !this.left;
 	this.down = false;
 
 	this.move();
@@ -30,6 +34,7 @@ SubEnemy.prototype.update = function ()
 		var f = Math.round( this.step / 10 );
 		this.sprite.frame = a[f % a.length];
 	}
+	
 	else if ( this.onlyDown )
 	{
 		this.setAnimation( 'crouch' );
@@ -38,6 +43,7 @@ SubEnemy.prototype.update = function ()
 		var f = Math.round( this.step / 10 );
 		this.sprite.frame = a[f % a.length];
 	}
+	
 	else if ( Math.abs( this.v.x ) > 20 )
 	{
 		this.sprite.scale.x = this.v.x > 0 ? 1 : -1;
@@ -54,6 +60,7 @@ SubEnemy.prototype.update = function ()
 		var f = Math.round( this.step / 10 );
 		this.sprite.frame = a[f % a.length];
 	}
+	
 	else
 	{
 		this.setAnimation( 'idle' );
@@ -71,4 +78,6 @@ SubEnemy.prototype.update = function ()
 	this.prevVel.copyFrom(this.v);
 	
 };
-extend(Enemy, SubEnemy);
+
+
+extend(Enemy, Hopper);

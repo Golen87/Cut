@@ -5,6 +5,7 @@ Enemy.prototype.create = function ( group, x, y )
 {
 	this.sprite = group.create( x, y, 'kid', 0 );
 	this.setVars( group, x , y );
+
 	Global.game.physics.arcade.enable( this.sprite, Phaser.Physics.ARCADE );
 	this.setupAnimation();
 
@@ -53,7 +54,7 @@ Enemy.prototype.render = function ()
 Enemy.prototype.move = function() 
 {
 
-	this.onFloor = this.sprite.body.touching.down || this.sprite.body.blocked.down || this.locked;
+	this.onFloor = this.sprite.body.touching.down || this.sprite.body.blocked.down;
 
 	var p = new Phaser.Point( 0, 0 );
 
@@ -85,11 +86,13 @@ Enemy.prototype.move = function()
 	this.v.y = Math.min( this.v.y, 1000 );
 
 	
-}
+};
 Enemy.prototype.setVars = function( group, x, y ) 
 {
 	this.speed = 350;
 	this.climbSpeed = 140;
+
+	
 
 	this.sprite.owner = this;
 	this.onFloor = false;
@@ -112,4 +115,36 @@ Enemy.prototype.setVars = function( group, x, y )
 	this.right = false;
 	this.jumpTimer = 0;
 	this.step = 0;
+};
+
+
+Enemy.prototype.jump = function() 
+{
+	if ( this.willJump )
+	{
+		this.willJump = false;
+		Global.Audio.play( 'jump' );
+
+		if ( this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked )
+		{
+			//  If the platform is moving up we add its velocity to the players jump
+			this.sprite.body.velocity.y = -650 + (this.lockedTo.deltaY * 10);
+		}
+		else
+		{
+			this.sprite.body.velocity.y = -650;
+		}
+
+		this.jumpTimer = Global.game.time.now + 10;
+	}
+
+	if ( this.willDrop && this.wasLocked )
+	{
+		this.willDrop = false;
+
+		this.sprite.body.velocity.y = 650/4;
+
+		this.jumpTimer = Global.game.time.now + 10;
+		this.lockedTo.owner.lockTimer = Global.game.time.now + 100;
+	}
 }
