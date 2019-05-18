@@ -1,9 +1,9 @@
-var Kid = Kid || {};
+var Global = Global || {};
 
 //loading the game assets
-Kid.Preload = function() {};
+Global.Preload = function() {};
 
-Kid.Preload.prototype = {
+Global.Preload.prototype = {
 	preload: function () {
 		
 		this.game.stage.backgroundColor = '#eeeeee';
@@ -58,7 +58,7 @@ Kid.Preload.prototype = {
 
 	},
 	create: function () {
-		Kid.Audio = new AudioManager();
+		Global.Audio = new AudioManager();
 
 		this.state.start( 'MainMenu', Phaser.Plugin.StateTransition.Out.ScaleUp );
 	}

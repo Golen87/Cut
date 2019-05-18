@@ -5,8 +5,8 @@ function RoomManager ( decoGroup )
 	this.worldName = 'floorMap';
 	// floorMap, wallMap, entityMap
 
-	this.width = Kid.game.cache.getImage( this.worldName ).width;
-	this.height = Kid.game.cache.getImage( this.worldName ).height;
+	this.width = Global.game.cache.getImage( this.worldName ).width;
+	this.height = Global.game.cache.getImage( this.worldName ).height;
 
 	this.tileMap = [...Array( this.height ).keys()].map( i => Array( this.width ) );
 	this.makePixelMap( 'walls' );
@@ -21,13 +21,13 @@ function RoomManager ( decoGroup )
 
 	this.activeMap = [...Array( this.height ).keys()].map( i => Array( this.width ) );
 
-	this.background = Kid.game.add.group();
+	this.background = Global.game.add.group();
 	this.background.createMultiple( 2*ROOM_WIDTH*ROOM_HEIGHT, 'dungeon', 0, false );
-	this.foreground = Kid.game.add.group();
+	this.foreground = Global.game.add.group();
 	this.foreground.createMultiple( 3*ROOM_WIDTH*ROOM_HEIGHT, 'dungeon', 0, false );
-	this.physics = Kid.game.add.group();
+	this.physics = Global.game.add.group();
 	this.physics.createMultiple( ROOM_WIDTH*ROOM_HEIGHT / 2, null, 0, false );
-	this.boundaries = Kid.game.add.group();
+	this.boundaries = Global.game.add.group();
 	this.boundaries.createMultiple( 4, null, 0, false );
 
 	this.decorations = Array( 32 );
@@ -39,20 +39,20 @@ function RoomManager ( decoGroup )
 	
 	for ( var i = 0; i < this.physics.children.length; i++ )
 	{
-		Kid.game.physics.enable( this.physics.children[i], Phaser.Physics.ARCADE );
+		Global.game.physics.enable( this.physics.children[i], Phaser.Physics.ARCADE );
 	}
 
 	for ( var i = 0; i < this.boundaries.children.length; i++ )
 	{
-		Kid.game.physics.enable( this.boundaries.children[i], Phaser.Physics.ARCADE );
+		Global.game.physics.enable( this.boundaries.children[i], Phaser.Physics.ARCADE );
 	}
 }
 
 
 RoomManager.prototype.makePixelMap = function ( worldFile )
 {
-	var bmd = Kid.game.make.bitmapData( this.width, this.height );
-	bmd.draw( Kid.game.cache.getImage( worldFile ), 0, 0 );
+	var bmd = Global.game.make.bitmapData( this.width, this.height );
+	bmd.draw( Global.game.cache.getImage( worldFile ), 0, 0 );
 	bmd.update();
 
 	for ( var y = 0; y < this.height; y++ )
@@ -406,19 +406,19 @@ RoomManager.prototype.makeSpriteMap = function ()
 
 RoomManager.prototype.render = function ()
 {
-	if ( Kid.debug )
+	if ( Global.debug )
 	{
 		this.physics.forEach( function ( member ) {
 			if ( member.exists )
 			{
-				Kid.game.debug.body( member, GREEN );
+				Global.game.debug.body( member, GREEN );
 			}
 		}, this );
 
 		this.boundaries.forEach( function ( member ) {
 			if ( member.exists )
 			{
-				Kid.game.debug.body( member, CYAN );
+				Global.game.debug.body( member, CYAN );
 			}
 		}, this );
 	}
@@ -429,10 +429,10 @@ RoomManager.prototype.isInView = function ( x, y )
 {
 	// Will erase borders, which can be seen if moving to another room while camera shakes.
 	return (
-		x >= Kid.game.camera.x - 16 - 16 &&
-		y >= Kid.game.camera.y - 16 - 16 &&
-		x < Kid.game.camera.x + 16 * ROOM_WIDTH + 16 &&
-		y < Kid.game.camera.y + 16 * ROOM_HEIGHT + 16
+		x >= Global.game.camera.x - 16 - 16 &&
+		y >= Global.game.camera.y - 16 - 16 &&
+		x < Global.game.camera.x + 16 * ROOM_WIDTH + 16 &&
+		y < Global.game.camera.y + 16 * ROOM_HEIGHT + 16
 	);
 };
 

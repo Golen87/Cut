@@ -1,11 +1,11 @@
-var Kid = Kid || {};
+var Global = Global || {};
 
-Kid.Credits = function() {};
+Global.Credits = function() {};
 
-Kid.Credits.prototype = {
+Global.Credits.prototype = {
 	create: function() {
-		Kid.game.stage.backgroundColor = '#111111';
-		Kid.game.camera.flash( 0x111111, 500 );
+		Global.game.stage.backgroundColor = '#111111';
+		Global.game.camera.flash( 0x111111, 500 );
 
 		var y = 30;
 		var text = this.add.bitmapText( SCREEN_WIDTH/2, y, 'PixeladeFancy', '- Made by -', 13 );
@@ -50,7 +50,7 @@ Kid.Credits.prototype = {
 		"time"
 
 		/* Darkness around edges */
-		this.fog = Kid.game.add.sprite( 0, 0, 'fog' );
+		this.fog = Global.game.add.sprite( 0, 0, 'fog' );
 		this.fog.blendMode = Phaser.blendModes.MULTIPLY;
 
 		/* Copyright */
@@ -61,9 +61,9 @@ Kid.Credits.prototype = {
 		//var text = this.add.bitmapText( SCREEN_WIDTH/2, SCREEN_HEIGHT - 32, 'Pixelade', 'Press [space] to play again', 13 );
 		//text.anchor.x = 0.5;
 
-		var start = Kid.game.input.keyboard.addKey( Phaser.Keyboard.SPACEBAR );
+		var start = Global.game.input.keyboard.addKey( Phaser.Keyboard.SPACEBAR );
 		start.onDown.add( this.toMainMenu, this );
-		var esc = Kid.game.input.keyboard.addKey( Phaser.Keyboard.ESC );
+		var esc = Global.game.input.keyboard.addKey( Phaser.Keyboard.ESC );
 		esc.onDown.add( this.toMainMenu, this );
 	},
 	update: function() {},

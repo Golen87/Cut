@@ -5,14 +5,14 @@ function Stage ()
 
 Stage.prototype.create = function ( x, y )
 {
-	this.stationary = Kid.game.add.physicsGroup();
-	this.vines = Kid.game.add.physicsGroup();
-	this.clouds = Kid.game.add.physicsGroup();
-	this.balloons = Kid.game.add.physicsGroup();
-	this.goal = Kid.game.add.physicsGroup();
+	this.stationary = Global.game.add.physicsGroup();
+	this.vines = Global.game.add.physicsGroup();
+	this.clouds = Global.game.add.physicsGroup();
+	this.balloons = Global.game.add.physicsGroup();
+	this.goal = Global.game.add.physicsGroup();
 
-	this.width = Kid.game.cache.getImage( 'walls' ).width;
-	this.height = Kid.game.cache.getImage( 'walls' ).height;
+	this.width = Global.game.cache.getImage( 'walls' ).width;
+	this.height = Global.game.cache.getImage( 'walls' ).height;
 
 	this.tileMap = [...Array( this.height ).keys()].map( i => Array( this.width ) );
 	this.makePixelMap( 'walls' );
@@ -89,22 +89,22 @@ Stage.prototype.update = function ()
 
 Stage.prototype.render = function ()
 {
-	if ( Kid.debug )
+	if ( Global.debug )
 	{
 		for (var i = this.stationary.children.length - 1; i >= 0; i--) {
-			Kid.game.debug.body( this.stationary.children[i], BLUE );
+			Global.game.debug.body( this.stationary.children[i], BLUE );
 		}
 		for (var i = this.vines.children.length - 1; i >= 0; i--) {
-			Kid.game.debug.body( this.vines.children[i], PURPLE );
+			Global.game.debug.body( this.vines.children[i], PURPLE );
 		}
 		for (var i = this.balloons.children.length - 1; i >= 0; i--) {
-			Kid.game.debug.body( this.balloons.children[i], YELLOW );
+			Global.game.debug.body( this.balloons.children[i], YELLOW );
 		}
 		for (var i = this.clouds.children.length - 1; i >= 0; i--) {
-			Kid.game.debug.body( this.clouds.children[i], CYAN );
+			Global.game.debug.body( this.clouds.children[i], CYAN );
 		}
 		for (var i = this.goal.children.length - 1; i >= 0; i--) {
-			Kid.game.debug.body( this.goal.children[i], GREEN );
+			Global.game.debug.body( this.goal.children[i], GREEN );
 		}
 	}
 };
@@ -114,8 +114,8 @@ Stage.prototype.render = function ()
 
 Stage.prototype.makePixelMap = function ( worldFile )
 {
-	var bmd = Kid.game.make.bitmapData( this.width, this.height );
-	bmd.draw( Kid.game.cache.getImage( worldFile ), 0, 0 );
+	var bmd = Global.game.make.bitmapData( this.width, this.height );
+	bmd.draw( Global.game.cache.getImage( worldFile ), 0, 0 );
 	bmd.update();
 
 	for ( var y = 0; y < this.height; y++ )

@@ -1,8 +1,8 @@
-var Kid = Kid || {};
+var Global = Global || {};
 
-Kid.Boot = function() {};
+Global.Boot = function() {};
 
-Kid.Boot.prototype = {
+Global.Boot.prototype = {
 	preload: function() {
 		this.load.image( 'preloader-bar', 'assets/sprites/preloader-bar.png' );
 	},

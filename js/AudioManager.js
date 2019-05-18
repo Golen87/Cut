@@ -11,42 +11,42 @@ AudioManager.prototype.init = function ()
 {
 	//addMarker(name, start, duration, volume, loop)
 
-	var masterVol = 1.0;
+	var masterVol = 0.2;
 
 	var name = 'music';
 	var vol = 0.5 * masterVol;
 	this.sounds[name] = {};
-	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
 	var name = 'jump';
 	var vol = 0.2 * masterVol;
 	this.sounds[name] = {};
-	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
 	var name = 'land';
 	var vol = 0.4 * masterVol;
 	this.sounds[name] = {};
-	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
 	var name = 'skid';
 	var vol = 0.2 * masterVol;
 	this.sounds[name] = {};
-	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
 	var name = 'climb1';
 	var vol = 0.4 * masterVol;
 	this.sounds[name] = {};
-	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
 	var name = 'climb2';
 	var vol = 0.4 * masterVol;
 	this.sounds[name] = {};
-	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
 	var name = 'pop';
 	var vol = 0.4 * masterVol;
 	this.sounds[name] = {};
-	this.sounds[name].sound = Kid.game.add.audio( name, vol );
+	this.sounds[name].sound = Global.game.add.audio( name, vol );
 };
 
 AudioManager.prototype.getMarkers = function ( name, marker=null )

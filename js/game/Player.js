@@ -11,7 +11,7 @@ Player.prototype.create = function ( group, x, y )
 	this.sprite = group.create( x, y, 'kid', 0 );
 
 	this.sprite.owner = this;
-	Kid.game.physics.arcade.enable( this.sprite, Phaser.Physics.ARCADE );
+	Global.game.physics.arcade.enable( this.sprite, Phaser.Physics.ARCADE );
 	this.sprite.anchor.set( 0.5 );
 	this.sprite.scale.set( 1 );
 	this.sprite.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
@@ -28,13 +28,13 @@ Player.prototype.create = function ( group, x, y )
 	this.isClimbing = false;
 	this.prevVel = new Phaser.Point(0,0);
 
-	this.keys = Kid.game.input.keyboard.createCursorKeys();
-	this.keys.w = Kid.game.input.keyboard.addKey( Phaser.Keyboard.W );
-	this.keys.a = Kid.game.input.keyboard.addKey( Phaser.Keyboard.A );
-	this.keys.s = Kid.game.input.keyboard.addKey( Phaser.Keyboard.S );
-	this.keys.d = Kid.game.input.keyboard.addKey( Phaser.Keyboard.D );
+	this.keys = Global.game.input.keyboard.createCursorKeys();
+	this.keys.w = Global.game.input.keyboard.addKey( Phaser.Keyboard.W );
+	this.keys.a = Global.game.input.keyboard.addKey( Phaser.Keyboard.A );
+	this.keys.s = Global.game.input.keyboard.addKey( Phaser.Keyboard.S );
+	this.keys.d = Global.game.input.keyboard.addKey( Phaser.Keyboard.D );
 
-	this.keys.space = Kid.game.input.keyboard.addKey( Phaser.Keyboard.SPACEBAR );
+	this.keys.space = Global.game.input.keyboard.addKey( Phaser.Keyboard.SPACEBAR );
 	this.jumpTimer = 0;
 	this.step = 0;
 };
@@ -77,7 +77,7 @@ Player.prototype.preRender = function ()
 	if (this.willJump)
 	{
 		this.willJump = false;
-		Kid.Audio.play( 'jump' );
+		Global.Audio.play( 'jump' );
 
 		if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked)
 		{
@@ -89,7 +89,7 @@ Player.prototype.preRender = function ()
 			this.sprite.body.velocity.y = -650;
 		}
 
-		this.jumpTimer = Kid.game.time.now + 10;
+		this.jumpTimer = Global.game.time.now + 10;
 	}
 
 	if (this.willDrop && this.wasLocked)
@@ -98,8 +98,8 @@ Player.prototype.preRender = function ()
 
 		this.sprite.body.velocity.y = 650/4;
 
-		this.jumpTimer = Kid.game.time.now + 10;
-		this.lockedTo.owner.lockTimer = Kid.game.time.now + 100;
+		this.jumpTimer = Global.game.time.now + 10;
+		this.lockedTo.owner.lockTimer = Global.game.time.now + 100;
 	}
 
 	if (this.wasLocked)
@@ -142,7 +142,7 @@ Player.prototype.update = function ()
 		this.sprite.body.velocity.x += ( p.x - this.sprite.body.velocity.x ) / 3;
 		this.sprite.body.velocity.y += ( p.y - this.sprite.body.velocity.y ) / 3;
 
-		if ( this.climbTimer < Kid.game.time.now )
+		if ( this.climbTimer < Global.game.time.now )
 		{
 			this.stopClimbing();
 		}
@@ -169,7 +169,7 @@ Player.prototype.update = function ()
 
 	if ( this.keys.space.justDown )
 	{
-		if ( ( onFloor && Kid.game.time.now > this.jumpTimer ) || this.isClimbing )
+		if ( ( onFloor && Global.game.time.now > this.jumpTimer ) || this.isClimbing )
 		{
 			if (this.locked)
 			{
@@ -230,7 +230,7 @@ Player.prototype.update = function ()
 
 		if ( oldScale != this.sprite.scale.x )
 		{
-			Kid.Audio.play( oldScale > 0 ? 'climb1' : 'climb2' );
+			Global.Audio.play( oldScale > 0 ? 'climb1' : 'climb2' );
 		}
 	}
 	else if ( !onFloor )
@@ -257,7 +257,7 @@ Player.prototype.update = function ()
 		if ( ( v.x > 0 && left ) || ( v.x < 0 && right ) )
 		{
 			this.setAnimation( 'skid' );
-			Kid.Audio.play('skid');
+			Global.Audio.play('skid');
 		}
 
 		this.step += v.getMagnitude()/2 / this.speed + 1;
@@ -277,16 +277,16 @@ Player.prototype.update = function ()
 
 	if ( v.y == 0 && this.prevVel && this.prevVel.y > 0 )
 	{
-		Kid.Audio.play('land');
+		Global.Audio.play('land');
 	}
 	this.prevVel.copyFrom(v);
 };
 
 Player.prototype.render = function ()
 {
-	if ( Kid.debug )
+	if ( Global.debug )
 	{
-		Kid.game.debug.body( this.sprite, RED );
+		Global.game.debug.body( this.sprite, RED );
 	}
 };
 
@@ -315,7 +315,7 @@ Player.prototype.onVine = function ()
 	}
 	if ( this.isClimbing )
 	{
-		this.climbTimer = Kid.game.time.now + 10;
+		this.climbTimer = Global.game.time.now + 10;
 	}
 };
 

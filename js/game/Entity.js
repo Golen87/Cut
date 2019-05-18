@@ -12,8 +12,8 @@ Entity = function (x, y, key, group)
 
 Entity.prototype.addMotionPath = function (motionPath)
 {
-	this.tweenX = Kid.game.add.tween( this.sprite.body );
-	this.tweenY = Kid.game.add.tween( this.sprite.body );
+	this.tweenX = Global.game.add.tween( this.sprite.body );
+	this.tweenY = Global.game.add.tween( this.sprite.body );
 
 	for (var i = 0; i < motionPath.length; i++)
 	{

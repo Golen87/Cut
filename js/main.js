@@ -1,18 +1,18 @@
-var Kid = Kid || {};
+var Global = Global || {};
 
 var SCREEN_WIDTH = 64*14;
 var SCREEN_HEIGHT = 64*10;
-Kid.game = new Phaser.Game( SCREEN_WIDTH, SCREEN_HEIGHT, Phaser.CANVAS );
+Global.game = new Phaser.Game( SCREEN_WIDTH, SCREEN_HEIGHT, Phaser.CANVAS );
 
-Kid.game.state.add( 'Boot', Kid.Boot );
-Kid.game.state.add( 'Preload', Kid.Preload );
-Kid.game.state.add( 'MainMenu', Kid.MainMenu );
-Kid.game.state.add( 'Game', Kid.Game );
-Kid.game.state.add( 'Credits', Kid.Credits );
+Global.game.state.add( 'Boot', Global.Boot );
+Global.game.state.add( 'Preload', Global.Preload );
+Global.game.state.add( 'MainMenu', Global.MainMenu );
+Global.game.state.add( 'Game', Global.Game );
+Global.game.state.add( 'Credits', Global.Credits );
 
-Kid.game.state.start( 'Boot' );
+Global.game.state.start( 'Boot' );
 
-Kid.debug = false;
+Global.debug = false;
 
 var RED = 'rgba(255,0,0,0.4)';
 var YELLOW = 'rgba(255,255,0,0.4)';

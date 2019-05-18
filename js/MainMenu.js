@@ -1,16 +1,16 @@
-var Kid = Kid || {};
+var Global = Global || {};
 
-Kid.MainMenu = function() {};
+Global.MainMenu = function() {};
 
-Kid.MainMenu.prototype = {
+Global.MainMenu.prototype = {
 	create: function() {
-		Kid.game.stage.backgroundColor = '#eeeeee';
+		Global.game.stage.backgroundColor = '#eeeeee';
 
 		var x = SCREEN_WIDTH - 50;
 		var y = SCREEN_HEIGHT - 100;
 
 		/* Title */
-		var title = this.add.bitmapText( x, y, 'BalsamiqBold', 'Kactus Kid', 72 );
+		var title = this.add.bitmapText( x, y, 'BalsamiqBold', 'Game Title', 72 );
 		title.tint = 0x777777;
 		title.anchor.set( 1, 1 );
 
@@ -21,7 +21,7 @@ Kid.MainMenu.prototype = {
 
 		/* Input */
 
-		var key = Kid.game.input.keyboard.addKey( Phaser.Keyboard.SPACEBAR );
+		var key = Global.game.input.keyboard.addKey( Phaser.Keyboard.SPACEBAR );
 		key.onDown.add( function() {this.startGame();}, this );
 	},
 	startGame: function ()
