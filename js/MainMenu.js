@@ -24,6 +24,10 @@ Global.MainMenu.prototype = {
 		var key = Global.game.input.keyboard.addKey( Phaser.Keyboard.SPACEBAR );
 		key.onDown.add( function() {this.startGame();}, this );
 	},
+	update: function() {
+		// Skip menu
+		this.state.start( 'Game' );
+	},
 	startGame: function ()
 	{
 		this.state.start( 'Game' );

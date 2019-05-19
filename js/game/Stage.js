@@ -25,10 +25,13 @@ Stage.prototype.create = function ( x, y )
 
 Stage.prototype.addWall = function ( x, y, s )
 {
-	var wall = new Stationary( x*64, y*64, 'tree_' + s, this.stationary );
-	wall.sprite.scale.set( 64 / 260 );
-	var size = s == 's' ? 260 : s == 'm' ? 260*2 : 1000;
-	wall.sprite.body.setSize( size, 201, 20, 0 );
+	//var wall = new Stationary( x*64, y*64, 'tree_' + s, this.stationary );
+	//wall.sprite.scale.set( 64 / 260 );
+	//var size = s == 's' ? 260 : s == 'm' ? 260*2 : 1000;
+	//wall.sprite.body.setSize( size, 201, 20, 0 );
+	var wall = new Stationary( x*64, y*64, 'stone', this.stationary );
+	wall.sprite.scale.set( 1 );
+	wall.sprite.body.setSize( 64, 64 );
 };
 
 Stage.prototype.addVines = function ( x, y )

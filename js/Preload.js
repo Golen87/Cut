@@ -21,6 +21,7 @@ Global.Preload.prototype = {
 		this.load.image( 'test_room', 'assets/rooms/test_room.png' );
 
 		this.load.spritesheet( 'kid', 'assets/sprites/kid.png', 48, 96 );
+		this.load.image( 'circle', 'assets/sprites/circle.png' );
 
 		this.load.spritesheet( 'balloon', 'assets/sprites/balloon.png', 48, 96 );
 
@@ -28,6 +29,7 @@ Global.Preload.prototype = {
 		this.load.image( 'tree_m', 'assets/sprites/tree_medium.png' );
 		this.load.image( 'tree_l', 'assets/sprites/tree_long.png' );
 		this.load.image( 'leaves', 'assets/sprites/leaves.png' );
+		this.load.image( 'stone', 'assets/sprites/stone.png' );
 
 		this.load.image( 'sky', 'assets/sprites/sky.png' );
 		this.load.spritesheet( 'cloud', 'assets/sprites/cloud.png', 120, 46 );
