@@ -1,17 +1,24 @@
-function SubEnemy()
-{
+function Walker() {}
 
-}
-SubEnemy.prototype.create = function( group, x, y )
+Walker.prototype.create = function ( group, x, y )
 {
-	this.sprite = group.create( x, y, 'kid2', 0 );
-	Global.game.physics.arcade.enable( this.sprite, Phaser.Physics.ARCADE );
-	this.setVars( group, x, y );
-	this.right = true;
-	
-	this.setupAnimation();
+	Enemy.prototype.create.call( this, group, x, y );
 }
-SubEnemy.prototype.update = function ()
+
+Walker.prototype.setupAnimation = function ()
+{
+	this.animations = {};
+	this.animations['idle'] = [2];
+	this.animations['crouch'] = [2];
+	this.animations['walk'] = [0,1];
+	this.animations['jump'] = [2];
+	this.animations['skid'] = [2];
+	this.animations['climb'] = [2];
+
+	this.setAnimation( 'idle' );
+};
+
+Walker.prototype.update = function ()
 {
 	if (Math.random() <= 0.05) { 
 		this.right = !this.right;
@@ -46,7 +53,7 @@ SubEnemy.prototype.update = function ()
 		if ( ( this.v.x > 0 && this.left ) || ( this.v.x < 0 && this.right ) )
 		{
 			this.setAnimation( 'skid' );
-			Global.Audio.play('skid');
+			//Global.Audio.play('skid');
 		}
 
 		this.step += this.v.getMagnitude()/2 / this.speed + 1;
@@ -71,4 +78,4 @@ SubEnemy.prototype.update = function ()
 	this.prevVel.copyFrom(this.v);
 	
 };
-extend(Enemy, SubEnemy);
+extend(Enemy, Walker);

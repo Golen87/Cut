@@ -1,10 +1,29 @@
-function Enemy ()
-{
-}
+function Enemy () {}
+
 Enemy.prototype.create = function ( group, x, y )
 {
-	this.sprite = group.create( x, y, 'kid', 0 );
-	this.setVars( group, x , y );
+	this.speed = 350;
+
+	this.sprite = group.create( x, y, 'ingredients', 0 );
+	this.sprite.owner = this;
+	this.onFloor = false;
+	this.sprite.anchor.set( 0.5 );
+	this.sprite.scale.set( 1 );
+	this.sprite.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+	this.sprite.body.setSize( 70, 85, 20, 20 );
+	this.v;
+	this.locked = false;
+	this.lockedTo = null;
+	this.wasLocked = false;
+	this.willJump = false;
+	this.willDrop = false;
+	this.prevVel = new Phaser.Point(0,0);
+	this.up = false;
+	this.down = false;
+	this.left = false;
+	this.right = false;
+	this.jumpTimer = 0;
+	this.step = 0;
 
 	Global.game.physics.arcade.enable( this.sprite, Phaser.Physics.ARCADE );
 	this.setupAnimation();
@@ -19,7 +38,6 @@ Enemy.prototype.setupAnimation = function ()
 	this.animations['walk'] = [6,7,8];
 	this.animations['jump'] = [9,10];
 	this.animations['skid'] = [11,12];
-	this.animations['climb'] = [11,12];
 
 	this.setAnimation( 'idle' );
 };
@@ -87,36 +105,6 @@ Enemy.prototype.move = function()
 
 	
 };
-Enemy.prototype.setVars = function( group, x, y ) 
-{
-	this.speed = 350;
-	this.climbSpeed = 140;
-
-	
-
-	this.sprite.owner = this;
-	this.onFloor = false;
-	this.sprite.anchor.set( 0.5 );
-	this.sprite.scale.set( 1 );
-	this.sprite.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
-	this.sprite.body.setSize( 40, 78, 4, 15 );
-	this.v;
-	this.locked = false;
-	this.lockedTo = null;
-	this.wasLocked = false;
-	this.willJump = false;
-	this.willDrop = false;
-	this.willClimb = false;
-	this.isClimbing = false;
-	this.prevVel = new Phaser.Point(0,0);
-	this.up = false;
-	this.down = false;
-	this.left = false;
-	this.right = false;
-	this.jumpTimer = 0;
-	this.step = 0;
-};
-
 
 Enemy.prototype.jump = function() 
 {

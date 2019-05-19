@@ -1,15 +1,24 @@
-function Hopper()
+function Hopper() {}
+
+Hopper.prototype.create = function ( group, x, y )
 {
+	Enemy.prototype.create.call( this, group, x, y );
+
+	this.speed = 100;
 }
 
-Hopper.prototype.create = function( group, x, y )
+Hopper.prototype.setupAnimation = function ()
 {
-	this.sprite = group.create( x, y, 'kid2', 0 );
-	Global.game.physics.arcade.enable( this.sprite, Phaser.Physics.ARCADE );
-	this.setVars( group, x, y );
-	this.right = true;	
-	this.setupAnimation();
-}
+	this.animations = {};
+	this.animations['idle'] = [5];
+	this.animations['crouch'] = [5];
+	this.animations['walk'] = [3];
+	this.animations['jump'] = [4];
+	this.animations['skid'] = [4];
+	this.animations['climb'] = [5];
+
+	this.setAnimation( 'idle' );
+};
 
 Hopper.prototype.update = function ()
 {

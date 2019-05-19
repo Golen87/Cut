@@ -24,36 +24,36 @@ Global.Game.prototype.create = function ()
 	this.Stage.create();
 	Global.game.world.setBounds( 0, 0, this.Stage.width*64, this.Stage.height*64 );
 
+
 	this.playerGroup = Global.game.add.physicsGroup();
-	this.enemyGroup = Global.game.add.physicsGroup();
 	this.Player = new Player();
-	this.Enemy = new Enemy();
-	this.SubEnemy = new SubEnemy();
-	this.Hopper = new Hopper();
-	
 	this.Player.create(
 		this.playerGroup,
 		7 * 64,
 		8 * 64
 	);
-	
-	this.Enemy.create(
-		this.enemyGroup,
-		7 * 64,
-		8 * 64
-	);
-	this.SubEnemy.create(
-		this.enemyGroup,
-		7 * 64,
-		8 * 64
-	);
-	this.Hopper.create(
-		this.enemyGroup,
-		7 * 64,
-		8 * 64
-	);
-
 	this.camera.follow( this.Player.sprite );
+
+	
+	this.enemyGroup = Global.game.add.physicsGroup();
+	this.enemies = [];
+	
+	var tomato = new Walker();
+	tomato.create(
+		this.enemyGroup,
+		7 * 64,
+		8 * 64
+	);
+	this.enemies.push(tomato);
+
+	var cheese = new Hopper();
+	cheese.create(
+		this.enemyGroup,
+		7 * 64,
+		8 * 64
+	);
+	this.enemies.push(cheese);
+
 
 	this.debugToggle = Global.game.input.keyboard.addKey( Phaser.Keyboard.Q );
 
@@ -63,8 +63,8 @@ Global.Game.prototype.create = function ()
 	Global.game.world.bringToTop( this.Stage.clouds );
 	Global.game.world.bringToTop( this.Stage.balloons );
 	Global.game.world.bringToTop( this.Stage.goal );
-	Global.game.world.bringToTop( this.playerGroup );
 	Global.game.world.bringToTop( this.enemyGroup );
+	Global.game.world.bringToTop( this.playerGroup );
 };
 
 Global.Game.prototype.preRender = function ()
@@ -75,8 +75,9 @@ Global.Game.prototype.preRender = function ()
 	}
 
 	this.Player.preRender();
-	this.Enemy.preRender();
-	this.SubEnemy.preRender();
+	for (var i = 0; i < this.enemies.length; i++) {
+		this.enemies[i].preRender();
+	}
 };
 
 Global.Game.prototype.update = function ()
@@ -84,9 +85,10 @@ Global.Game.prototype.update = function ()
 	this.handleCollisions();
 
 	this.Player.update();
-	this.Enemy.update();
-	this.SubEnemy.update();
-	this.Hopper.update();
+
+	for (var i = 0; i < this.enemies.length; i++) {
+		this.enemies[i].update();
+	}
 
 	if ( this.Player.sprite.y > Global.game.world.bounds.height )
 	{
@@ -103,9 +105,9 @@ Global.Game.prototype.handleCollisions = function ()
 	this.physics.arcade.overlap( this.Player.gripper, this.Stage.stationary, this.Player.gripWall, null, this.Player );
 	this.physics.arcade.collide( this.Player.sprite, this.Stage.clouds, this.customSep, null, this );
 
-	this.physics.arcade.collide( this.Enemy.sprite, this.Stage.stationary );
-	this.physics.arcade.collide( this.SubEnemy.sprite, this.Stage.stationary );
-	this.physics.arcade.collide( this.Hopper.sprite, this.Stage.stationary );
+	for (var i = 0; i < this.enemies.length; i++) {
+		this.physics.arcade.collide( this.enemies[i].sprite, this.Stage.stationary );
+	}
 
 	Global.game.physics.arcade.overlap( this.Player.sprite, this.Stage.vines, function( playerSprite, vinesSprite ) {
 		playerSprite.owner.onVine();
@@ -142,8 +144,10 @@ Global.Game.prototype.customSep = function ( playerSprite, platformSprite )
 
 Global.Game.prototype.render = function ()
 {
-	this.Player.render();
-	this.Enemy.render();
-	this.SubEnemy.render();
 	this.Stage.render();
+	this.Player.render();
+
+	for (var i = 0; i < this.enemies.length; i++) {
+		this.enemies[i].render();
+	}
 };
