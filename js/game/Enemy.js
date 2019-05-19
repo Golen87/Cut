@@ -3,31 +3,12 @@ function Enemy ()
 }
 Enemy.prototype.create = function ( group, x, y )
 {
-	this.speed = 350;
-	this.climbSpeed = 140;
-
 	this.sprite = group.create( x, y, 'kid', 0 );
+	this.setVars( group, x , y );
 
-	this.sprite.owner = this;
 	Global.game.physics.arcade.enable( this.sprite, Phaser.Physics.ARCADE );
-	this.sprite.anchor.set( 0.5 );
-	this.sprite.scale.set( 1 );
-	this.sprite.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
-	this.sprite.body.setSize( 40, 78, 4, 15 );
-
 	this.setupAnimation();
 
-	this.locked = false;
-	this.lockedTo = null;
-	this.wasLocked = false;
-	this.willJump = false;
-	this.willDrop = false;
-	this.willClimb = false;
-	this.isClimbing = false;
-	this.prevVel = new Phaser.Point(0,0);
-	this.facingRight = true;
-	this.jumpTimer = 0;
-	this.step = 0;
 };
 
 Enemy.prototype.setupAnimation = function ()
@@ -59,29 +40,35 @@ Enemy.prototype.preRender = function ()
 
 Enemy.prototype.update = function ()
 {
-	var onFloor = this.sprite.body.touching.down || this.sprite.body.blocked.down || this.locked;
+	this.move();
+};
 
-	// todo: replace with better AI
-	var p = new Phaser.Point( 0, 0 );
-	if (Math.random() <= 0.05) { 
-		this.facingRight = ! this.facingRight;
+Enemy.prototype.render = function ()
+{
+	if ( Global.debug )
+	{
+		Global.game.debug.body( this.sprite, RED );
 	}
-	var left = !this.facingRight;
-	var right = this.facingRight;
-	var up = false;
-	var down = false;
-	var onlyDown = down && !left && !right;
-	if ( left )		p.x -= 1;
-	if ( right )	p.x += 1;
-	if ( up )		p.y -= 1;
-	if ( down )		p.y += 1;
+};
 
-	if ( down && onFloor )
+Enemy.prototype.move = function() 
+{
+
+	this.onFloor = this.sprite.body.touching.down || this.sprite.body.blocked.down;
+
+	var p = new Phaser.Point( 0, 0 );
+
+	if ( this.left )		p.x -= 1;
+	if ( this.right )		p.x += 1;
+	if ( this.up )			p.y -= 1;
+	if ( this.down )		p.y += 1;
+
+	if ( this.down && this.onFloor )
 		p.x = 0;
 	p.y = 0;
 	p.setMagnitude( this.speed );
 
-	if ( onFloor )
+	if ( this.onFloor )
 	{
 		var diff = ( p.x - this.sprite.body.velocity.x ) / 5;
 		diff = Math.max( Math.min( diff, this.speed / 15 ), -this.speed / 15 );
@@ -93,68 +80,71 @@ Enemy.prototype.update = function ()
 	}
 	
 	this.sprite.body.gravity.y = 1500;
+
+
+	this.v = this.sprite.body.velocity;
+	this.v.y = Math.min( this.v.y, 1000 );
+
 	
-	/* Handle animations */
-
-	var v = this.sprite.body.velocity;
-	v.y = Math.min( v.y, 1000 );
+};
+Enemy.prototype.setVars = function( group, x, y ) 
+{
+	this.speed = 350;
+	this.climbSpeed = 140;
 
 	
-	if ( !onFloor )
-	{
-		this.setAnimation( 'jump' );
-		this.step += 1;
-		var a = this.animations[this.state];
-		var f = Math.round( this.step / 10 );
-		this.sprite.frame = a[f % a.length];
-	}
-	else if ( onlyDown )
-	{
-		this.setAnimation( 'crouch' );
-		this.step += 1;
-		var a = this.animations[this.state];
-		var f = Math.round( this.step / 10 );
-		this.sprite.frame = a[f % a.length];
-	}
-	else if ( Math.abs( v.x ) > 20 )
-	{
-		this.sprite.scale.x = v.x > 0 ? 1 : -1;
-		this.setAnimation( 'walk' );
 
-		if ( ( v.x > 0 && left ) || ( v.x < 0 && right ) )
+	this.sprite.owner = this;
+	this.onFloor = false;
+	this.sprite.anchor.set( 0.5 );
+	this.sprite.scale.set( 1 );
+	this.sprite.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+	this.sprite.body.setSize( 40, 78, 4, 15 );
+	this.v;
+	this.locked = false;
+	this.lockedTo = null;
+	this.wasLocked = false;
+	this.willJump = false;
+	this.willDrop = false;
+	this.willClimb = false;
+	this.isClimbing = false;
+	this.prevVel = new Phaser.Point(0,0);
+	this.up = false;
+	this.down = false;
+	this.left = false;
+	this.right = false;
+	this.jumpTimer = 0;
+	this.step = 0;
+};
+
+
+Enemy.prototype.jump = function() 
+{
+	if ( this.willJump )
+	{
+		this.willJump = false;
+		Global.Audio.play( 'jump' );
+
+		if ( this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked )
 		{
-			this.setAnimation( 'skid' );
-			Global.Audio.play('skid');
+			//  If the platform is moving up we add its velocity to the players jump
+			this.sprite.body.velocity.y = -650 + (this.lockedTo.deltaY * 10);
+		}
+		else
+		{
+			this.sprite.body.velocity.y = -650;
 		}
 
-		this.step += v.getMagnitude()/2 / this.speed + 1;
-		var a = this.animations[this.state];
-		var f = Math.round( this.step / 10 );
-		this.sprite.frame = a[f % a.length];
+		this.jumpTimer = Global.game.time.now + 10;
 	}
-	else
+
+	if ( this.willDrop && this.wasLocked )
 	{
-		this.setAnimation( 'idle' );
-		this.step += 1;
-		var a = this.animations[this.state];
-		var f = Math.round( this.step / 10 );
-		this.sprite.frame = a[f % a.length];
+		this.willDrop = false;
+
+		this.sprite.body.velocity.y = 650/4;
+
+		this.jumpTimer = Global.game.time.now + 10;
+		this.lockedTo.owner.lockTimer = Global.game.time.now + 100;
 	}
-
-
-	if ( v.y == 0 && this.prevVel && this.prevVel.y > 0 )
-	{
-		Global.Audio.play('land');
-	}
-	this.prevVel.copyFrom(v);
-};
-
-Enemy.prototype.render = function ()
-{
-	if ( Global.debug )
-	{
-		Global.game.debug.body( this.sprite, RED );
-	}
-};
-
-
+}
