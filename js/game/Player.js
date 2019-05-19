@@ -3,7 +3,7 @@ function Player () {}
 Player.prototype.create = function ( group, x, y )
 {
 	this.speed = 300;
-	this.dragSpeed = 400;
+	this.dragSpeed = 550;
 	this.climbSpeed = 140;
 	this.jumpSpeed = 500;
 
@@ -15,7 +15,7 @@ Player.prototype.create = function ( group, x, y )
 	this.sprite.scale.set( this.xScale );
 	this.sprite.offset = new Phaser.Point( 0, 30 );
 	//this.sprite.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
-	this.sprite.body.setSize( 130, 198, 100, 45 );
+	this.sprite.body.setSize( 130, 190, 100, 53 );
 
 	this.gripper = group.create( 0, 8, 'circle', 0 );
 	this.sprite.addChild( this.gripper );
