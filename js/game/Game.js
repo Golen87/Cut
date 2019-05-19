@@ -85,6 +85,7 @@ Global.Game.prototype.handleCollisions = function ()
 {
 	this.physics.arcade.collide( this.Player.sprite, this.Stage.stationary );
         this.physics.arcade.collide( this.Enemy.sprite, this.Stage.stationary );
+	this.physics.arcade.overlap( this.Player.gripper, this.Stage.stationary, this.Player.gripWall, null, this.Player );
 	this.physics.arcade.collide( this.Player.sprite, this.Stage.clouds, this.customSep, null, this );
 	this.physics.arcade.collide( this.Enemy.sprite, this.Stage.clouds, this.customSep, null, this );
 	Global.game.physics.arcade.overlap( this.Player.sprite, this.Stage.vines, function( playerSprite, vinesSprite ) {
