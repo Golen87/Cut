@@ -11,7 +11,7 @@ AudioManager.prototype.init = function ()
 {
 	//addMarker(name, start, duration, volume, loop)
 
-	var masterVol = 0.2;
+	var masterVol = 0.6;
 
 	var name = 'music';
 	var vol = 0.5 * masterVol;
@@ -44,6 +44,11 @@ AudioManager.prototype.init = function ()
 	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
 	var name = 'pop';
+	var vol = 0.4 * masterVol;
+	this.sounds[name] = {};
+	this.sounds[name].sound = Global.game.add.audio( name, vol );
+
+	var name = 'enemy_hurt';
 	var vol = 0.4 * masterVol;
 	this.sounds[name] = {};
 	this.sounds[name].sound = Global.game.add.audio( name, vol );

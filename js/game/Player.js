@@ -5,26 +5,29 @@ Player.prototype.create = function ( group, x, y )
 	this.speed = 300;
 	this.dragSpeed = 400;
 	this.climbSpeed = 140;
+	this.jumpSpeed = 500;
 
-	this.sprite = group.create( x, y, 'kid', 0 );
+	this.sprite = group.create( x, y, 'cook', 0 );
 	this.sprite.owner = this;
 	Global.game.physics.arcade.enable( this.sprite, Phaser.Physics.ARCADE );
 	this.sprite.anchor.set( 0.5 );
-	this.sprite.scale.set( 1 );
+	this.xScale = 0.65;
+	this.sprite.scale.set( this.xScale );
 	this.sprite.offset = new Phaser.Point( 0, 30 );
-	this.sprite.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
-	this.sprite.body.setSize( 40, 78, 4, 15 );
+	//this.sprite.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+	this.sprite.body.setSize( 130, 198, 100, 45 );
 
 	this.gripper = group.create( 0, 8, 'circle', 0 );
 	this.sprite.addChild( this.gripper );
 	this.gripper.owner = this;
 	Global.game.physics.arcade.enable( this.gripper, Phaser.Physics.ARCADE );
 	this.gripper.anchor.set( 0.5 );
-	this.gripper.scale.set( 1/4 );
+	this.gripper.scale.set( 1/2 );
 	this.gripper.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
 	this.gripper.body.setCircle( 32 );
 	this.gripper.body.allowGravity = false;
 	this.gripper.tint = 0xff0000;
+	this.gripper.alpha = 0.0;
 
 	//this.cutter = group.create( 0, 0, 'circle', 0 );
 	//this.sprite.addChild( this.cutter );
@@ -67,12 +70,15 @@ Player.prototype.create = function ( group, x, y )
 Player.prototype.setupAnimation = function ()
 {
 	this.animations = {};
-	this.animations['idle'] = [0,1,2];
-	this.animations['crouch'] = [3,4,5];
-	this.animations['walk'] = [6,7,8];
-	this.animations['jump'] = [9,10];
-	this.animations['skid'] = [11,12];
-	this.animations['climb'] = [11,12];
+	this.animations['idle'] = [0,1];
+	this.animations['crouch'] = [7];
+	this.animations['walk'] = [2,3];
+	this.animations['jump'] = [6];
+	this.animations['skid'] = [3];
+	this.animations['climb'] = [7];
+	this.animations['prepare'] = [4];
+	this.animations['attack'] = [5];
+	this.animations['damage'] = [8];
 
 	this.setAnimation( 'idle' );
 };
@@ -194,11 +200,11 @@ Player.prototype.preRender = function ()
 		if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked)
 		{
 			//  If the platform is moving up we add its velocity to the players jump
-			this.sprite.body.velocity.y = -650 + (this.lockedTo.deltaY * 10);
+			this.sprite.body.velocity.y = -this.jumpSpeed + (this.lockedTo.deltaY * 10);
 		}
 		else
 		{
-			this.sprite.body.velocity.y = -650;
+			this.sprite.body.velocity.y = -this.jumpSpeed;
 		}
 
 		this.jumpTimer = Global.game.time.now + 10;
@@ -212,7 +218,7 @@ Player.prototype.preRender = function ()
 		this.canAttack = false;
 		this.attackTimer = Global.game.time.now + 10;
 
-		var dx = this.sprite.scale.x;
+		var dx = this.sprite.scale.x > 0 ? 1 : this.sprite.scale.x < 0 ? -1 : 0;
 		if ( this.input.dir.x != 0 ) {
 			dx = this.input.dir.x;
 		}
@@ -224,7 +230,7 @@ Player.prototype.preRender = function ()
 	{
 		this.willDrop = false;
 
-		this.sprite.body.velocity.y = 650/4;
+		this.sprite.body.velocity.y = this.jumpSpeed/4;
 
 		this.jumpTimer = Global.game.time.now + 10;
 		this.lockedTo.owner.lockTimer = Global.game.time.now + 100;
@@ -428,7 +434,7 @@ Player.prototype.update = function ()
 			this.step2 = 0;
 		this.step2 += v.getMagnitude() / this.climbSpeed;
 		var oldScale = this.sprite.scale.x;
-		this.sprite.scale.x = 1 - 2*(Math.round( this.step2 / 10 ) % 2);
+		this.sprite.scale.x = this.xScale - 2*this.xScale*(Math.round( this.step2 / 10 ) % 2);
 
 		if ( oldScale != this.sprite.scale.x )
 		{
@@ -453,7 +459,7 @@ Player.prototype.update = function ()
 	}
 	else if ( Math.abs( v.x ) > 20 )
 	{
-		this.sprite.scale.x = v.x > 0 ? 1 : -1;
+		this.sprite.scale.x = v.x > 0 ? this.xScale : -this.xScale;
 		this.setAnimation( 'walk' );
 
 		if ( ( v.x > 0 && this.input.dir.x < 0 ) || ( v.x < 0 && this.input.dir.x > 0 ) )
@@ -545,8 +551,8 @@ Player.prototype.attemptGrip = function (dx, dy)
 
 	if ( dy != 0 )
 		dx = 0;
-	this.gripper.x = 48 * dx * this.sprite.scale.x;
-	this.gripper.y = 48 * dy;
+	this.gripper.x = 120 * dx * (this.sprite.scale.x > 0 ? 1 : this.sprite.scale.x < 0 ? -1 : 0);
+	this.gripper.y = 120 * dy;
 
 	this.gripTimer = 1;
 };

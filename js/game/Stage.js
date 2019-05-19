@@ -47,19 +47,20 @@ Stage.prototype.addVines = function ( x, y )
 
 Stage.prototype.addBalloon = function ( x, y )
 {
-	var balloon = new Entity( x*64, y*64, 'balloon', this.balloons );
+	var balloon = new Entity( x*64, y*64, 'pizza', this.balloons );
 	balloon.sprite.scale.set( 1 );
 	balloon.sprite.body.setCircle( 20, 6, 8 );
 	balloon.sprite.animations.add( 'anim', [0,1,2], 6, true );
 	balloon.sprite.animations.play( 'anim' );
-	balloon.sprite.tint = Phaser.ArrayUtils.getRandomItem( [
+	balloon.sprite.scale.set(0.5);
+	/*balloon.sprite.tint = Phaser.ArrayUtils.getRandomItem( [
 		0xd65a35,
 		0xd6355a,
 		0x5ad635,
 		0x5a35d6,
 		0x355ad6,
 		0x35d65a,
-	] );
+	] );*/
 	balloon.makeBalloon();
 };
 
@@ -164,7 +165,7 @@ Stage.prototype.addObject = function ( key, x, y )
 	}
 	else if ( key == '0,255,0' )
 	{
-		this.addVines( x, y );
+		//this.addVines( x, y );
 	}
 	else if ( key == '255,0,0' )
 	{

@@ -30,7 +30,7 @@ Global.Game.prototype.create = function ()
 	this.Player.create(
 		this.playerGroup,
 		7 * 64,
-		8 * 64
+		5 * 64
 	);
 	this.camera.follow( this.Player.sprite );
 
@@ -107,6 +107,11 @@ Global.Game.prototype.handleCollisions = function ()
 
 	for (var i = 0; i < this.enemies.length; i++) {
 		this.physics.arcade.collide( this.enemies[i].sprite, this.Stage.stationary );
+		this.physics.arcade.overlap( this.enemies[i].sprite, this.Player.gripper, function() {
+			if (this.Player.gripTimer > 0)
+				Global.Audio.play('enemy_hurt');
+		}, null, this );
+
 	}
 
 	Global.game.physics.arcade.overlap( this.Player.sprite, this.Stage.vines, function( playerSprite, vinesSprite ) {

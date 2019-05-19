@@ -20,11 +20,14 @@ Global.Preload.prototype = {
 		this.load.image( 'walls', 'assets/rooms/walls.png' );
 		this.load.image( 'test_room', 'assets/rooms/test_room.png' );
 
+		this.load.spritesheet( 'cook', 'assets/sprites/cook.png', 330, 250 );
 		this.load.spritesheet( 'kid', 'assets/sprites/kid.png', 48, 96 );
 		this.load.spritesheet( 'kid2', 'assets/sprites/kid2.png', 48, 96 );
+		this.load.spritesheet( 'mouse', 'assets/sprites/mouse.png', 256, 200 );
 		this.load.spritesheet( 'ingredients', 'assets/sprites/ingredients.png', 110, 110 );
 		this.load.image( 'circle', 'assets/sprites/circle.png' );
 
+		this.load.spritesheet( 'pizza', 'assets/sprites/pizza.png', 132, 115 );
 		this.load.spritesheet( 'balloon', 'assets/sprites/balloon.png', 48, 96 );
 
 		this.load.image( 'tree_s', 'assets/sprites/tree_short.png' );
@@ -41,11 +44,12 @@ Global.Preload.prototype = {
 
 		this.load.audio( 'music', 'assets/sounds/music.ogg' );
 		this.load.audio( 'jump', 'assets/sounds/jump.ogg' );
-		this.load.audio( 'land', 'assets/sounds/land.wav' );
-		this.load.audio( 'skid', 'assets/sounds/skid.wav' );
+		this.load.audio( 'land', 'assets/sounds/land.ogg' );
+		this.load.audio( 'skid', 'assets/sounds/skid.ogg' );
 		this.load.audio( 'climb1', 'assets/sounds/climb1.wav' );
 		this.load.audio( 'climb2', 'assets/sounds/climb2.wav' );
 		this.load.audio( 'pop', 'assets/sounds/pop.ogg' );
+		this.load.audio( 'enemy_hurt', 'assets/sounds/enemy_hurt.ogg' );
 
 
 		// Loading progress bar

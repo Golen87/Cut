@@ -22,7 +22,7 @@ Hopper.prototype.setupAnimation = function ()
 
 Hopper.prototype.update = function ()
 {
-	if ( Math.random() <= 0.08 && this.onFloor ) { 
+	if ( Math.random() <= 0.04 && this.onFloor ) { 
 		this.willJump = true;
 		this.left = Math.random() >= 0.5 ? true : false;
 	}
