@@ -73,7 +73,7 @@ Walker.prototype.update = function ()
 
 	if ( this.v.y == 0 && this.prevVel && this.prevVel.y > 0 )
 	{
-		Global.Audio.play('land');
+		//Global.Audio.play('land');
 	}
 	this.prevVel.copyFrom(this.v);
 	

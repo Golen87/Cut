@@ -111,7 +111,7 @@ Enemy.prototype.jump = function()
 	if ( this.willJump )
 	{
 		this.willJump = false;
-		Global.Audio.play( 'jump' );
+		//Global.Audio.play( 'jump' );
 
 		if ( this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked )
 		{

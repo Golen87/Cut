@@ -46,6 +46,7 @@ Global.Preload.prototype = {
 		this.load.audio( 'jump', 'assets/sounds/jump.ogg' );
 		this.load.audio( 'land', 'assets/sounds/land.ogg' );
 		this.load.audio( 'skid', 'assets/sounds/skid.ogg' );
+		this.load.audio( 'swing', 'assets/sounds/swing.ogg' );
 		this.load.audio( 'climb1', 'assets/sounds/climb1.wav' );
 		this.load.audio( 'climb2', 'assets/sounds/climb2.wav' );
 		this.load.audio( 'pop', 'assets/sounds/pop.ogg' );

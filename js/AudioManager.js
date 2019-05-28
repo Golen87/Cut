@@ -33,6 +33,12 @@ AudioManager.prototype.init = function ()
 	this.sounds[name] = {};
 	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
+	var name = 'swing';
+	var vol = 0.9 * masterVol;
+	this.sounds[name] = {};
+	this.sounds[name].sound = Global.game.add.audio( name, vol );
+	this.sounds[name].sound.allowMultiple = true;
+
 	var name = 'climb1';
 	var vol = 0.4 * masterVol;
 	this.sounds[name] = {};

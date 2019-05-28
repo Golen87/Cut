@@ -42,7 +42,7 @@ Global.Game.prototype.create = function ()
 	tomato.create(
 		this.enemyGroup,
 		7 * 64,
-		8 * 64
+		12 * 64
 	);
 	this.enemies.push(tomato);
 
@@ -50,7 +50,7 @@ Global.Game.prototype.create = function ()
 	cheese.create(
 		this.enemyGroup,
 		7 * 64,
-		8 * 64
+		12 * 64
 	);
 	this.enemies.push(cheese);
 

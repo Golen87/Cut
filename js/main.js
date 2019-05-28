@@ -1,7 +1,7 @@
 var Global = Global || {};
 
-var SCREEN_WIDTH = 64*14;
-var SCREEN_HEIGHT = 64*10;
+var SCREEN_WIDTH = 64*16;
+var SCREEN_HEIGHT = 64*11;
 Global.game = new Phaser.Game( SCREEN_WIDTH, SCREEN_HEIGHT, Phaser.CANVAS );
 
 Global.game.state.add( 'Boot', Global.Boot );

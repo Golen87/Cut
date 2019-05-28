@@ -5,13 +5,13 @@ Player.prototype.create = function ( group, x, y )
 	this.speed = 300;
 	this.dragSpeed = 550;
 	this.climbSpeed = 140;
-	this.jumpSpeed = 500;
+	this.jumpSpeed = 600;
 
 	this.sprite = group.create( x, y, 'cook', 0 );
 	this.sprite.owner = this;
 	Global.game.physics.arcade.enable( this.sprite, Phaser.Physics.ARCADE );
 	this.sprite.anchor.set( 0.5 );
-	this.xScale = 0.65;
+	this.xScale = 0.6;
 	this.sprite.scale.set( this.xScale );
 	this.sprite.offset = new Phaser.Point( 0, 30 );
 	//this.sprite.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
@@ -47,7 +47,9 @@ Player.prototype.create = function ( group, x, y )
 
 	this.locked = false;
 	this.lockedTo = null;
+	this.lockCooldown = 500;
 	this.wasLocked = false;
+
 	this.willJump = false;
 	this.willDrop = false;
 	this.willClimb = false;
@@ -55,8 +57,10 @@ Player.prototype.create = function ( group, x, y )
 	this.prevVel = new Phaser.Point(0,0);
 
 	this.jumpTimer = 0;
+	this.jumpCooldown = 500;
 	this.canAttack = true;
 	this.attackTimer = 0;
+	this.attackCooldown = 200;
 	this.step = 0;
 
 	this.isGripping = null;
@@ -207,16 +211,17 @@ Player.prototype.preRender = function ()
 			this.sprite.body.velocity.y = -this.jumpSpeed;
 		}
 
-		this.jumpTimer = Global.game.time.now + 10;
+		this.jumpTimer = Global.game.time.now + this.jumpCooldown;
 	}
 
 	if (this.willAttack)
 	{
 		this.willAttack = false;
-		Global.Audio.play( 'pop' );
+		Global.Audio.play( 'swing' );
+		this.setAnimation( 'attack' );
 
 		this.canAttack = false;
-		this.attackTimer = Global.game.time.now + 10;
+		this.attackTimer = Global.game.time.now + this.attackCooldown;
 
 		var dx = this.sprite.scale.x > 0 ? 1 : this.sprite.scale.x < 0 ? -1 : 0;
 		if ( this.input.dir.x != 0 ) {
@@ -232,8 +237,8 @@ Player.prototype.preRender = function ()
 
 		this.sprite.body.velocity.y = this.jumpSpeed/4;
 
-		this.jumpTimer = Global.game.time.now + 10;
-		this.lockedTo.owner.lockTimer = Global.game.time.now + 100;
+		this.jumpTimer = Global.game.time.now + this.jumpCooldown;
+		this.lockedTo.owner.lockTimer = Global.game.time.now + this.lockCooldown;
 	}
 
 	if (this.wasLocked)
@@ -314,7 +319,10 @@ Player.prototype.update = function ()
 	}
 	else
 	{
-		if ( down && onFloor )
+		var isAttacking = this.input.attack.isDown || !this.canAttack;
+		var isCrouching = down && onFloor;
+
+		if ( isAttacking || isCrouching )
 			p.x = 0;
 		p.y = 0;
 		p.setMagnitude( this.speed );
@@ -367,7 +375,7 @@ Player.prototype.update = function ()
 		this.canAttack = true;
 	}
 
-	if ( this.input.attack.justDown )
+	if ( this.input.attack.justUp )
 	{
 		if ( this.isGripping )
 		{
@@ -375,10 +383,10 @@ Player.prototype.update = function ()
 		}
 		else if ( this.canAttack )
 		{
-			if (this.locked)
-			{
-				this.cancelLock();
-			}
+			//if (this.locked)
+			//{
+			//	this.cancelLock();
+			//}
 
 			if ( this.isClimbing )
 			{
@@ -413,22 +421,17 @@ Player.prototype.update = function ()
 	if ( this.isGripping )
 	{
 		this.setAnimation( 'crouch' );
-
-		this.step += 1;
-		var a = this.animations[this.state];
-		var f = Math.round( this.step / 10 );
-		this.sprite.frame = a[f % a.length];
-
 		//Global.Audio.play( 'drag' );
 	}
-	else if ( this.isClimbing )
+	else if ( this.canAttack && this.input.attack.isDown ) {
+		this.setAnimation( 'prepare' );
+	}
+	else if ( !this.canAttack ) {
+		this.setAnimation( 'attack' );
+	}
+	/*else if ( this.isClimbing )
 	{
 		this.setAnimation( 'climb' );
-
-		this.step += 1;
-		var a = this.animations[this.state];
-		var f = Math.round( this.step / 10 );
-		this.sprite.frame = a[f % a.length];
 
 		if ( this.step2 == null )
 			this.step2 = 0;
@@ -440,22 +443,14 @@ Player.prototype.update = function ()
 		{
 			Global.Audio.play( oldScale > 0 ? 'climb1' : 'climb2' );
 		}
-	}
+	}*/
 	else if ( !onFloor )
 	{
 		this.setAnimation( 'jump' );
-		this.step += 1;
-		var a = this.animations[this.state];
-		var f = Math.round( this.step / 10 );
-		this.sprite.frame = a[f % a.length];
 	}
 	else if ( down )
 	{
 		this.setAnimation( 'crouch' );
-		this.step += 1;
-		var a = this.animations[this.state];
-		var f = Math.round( this.step / 10 );
-		this.sprite.frame = a[f % a.length];
 	}
 	else if ( Math.abs( v.x ) > 20 )
 	{
@@ -467,20 +462,17 @@ Player.prototype.update = function ()
 			this.setAnimation( 'skid' );
 			Global.Audio.play('skid');
 		}
-
-		this.step += v.getMagnitude()/2 / this.speed + 1;
-		var a = this.animations[this.state];
-		var f = Math.round( this.step / 10 );
-		this.sprite.frame = a[f % a.length];
 	}
 	else
 	{
 		this.setAnimation( 'idle' );
-		this.step += 1;
-		var a = this.animations[this.state];
-		var f = Math.round( this.step / 10 );
-		this.sprite.frame = a[f % a.length];
 	}
+
+	this.step += 1;
+	var a = this.animations[this.state];
+	var f = Math.round( this.step / 10 );
+	this.sprite.frame = a[f % a.length];
+
 
 	if ( v.y == 0 && this.prevVel && this.prevVel.y > 0 )
 	{
@@ -568,6 +560,11 @@ Player.prototype.gripWall = function (gripper, wall)
 			this.gripDir.y = 0;
 
 		this.isGripping = true;
+	}
+
+	if (this.locked)
+	{
+		this.cancelLock();
 	}
 
 	this.gripTimer = 1;

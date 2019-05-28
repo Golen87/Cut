@@ -61,7 +61,7 @@ Hopper.prototype.update = function ()
 		if ( ( this.v.x > 0 && this.left ) || ( this.v.x < 0 && this.right ) )
 		{
 			this.setAnimation( 'skid' );
-			Global.Audio.play('skid');
+			//Global.Audio.play('skid');
 		}
 
 		this.step += this.v.getMagnitude()/2 / this.speed + 1;
@@ -82,7 +82,7 @@ Hopper.prototype.update = function ()
 
 	if ( this.v.y == 0 && this.prevVel && this.prevVel.y > 0 )
 	{
-		Global.Audio.play('land');
+		//Global.Audio.play('land');
 	}
 	this.prevVel.copyFrom(this.v);
 	
