@@ -135,7 +135,7 @@ Global.Game.prototype.handleCollisions = function ()
 
 Global.Game.prototype.customSep = function ( playerSprite, platformSprite )
 {
-	if ( !playerSprite.owner.locked && playerSprite.body.velocity.y > 0 && Global.game.time.now > platformSprite.owner.lockTimer )
+	if ( !playerSprite.owner.locked && playerSprite.body.velocity.y > 0 && Global.game.time.now > platformSprite.owner.lockTimer && !playerSprite.owner.isGripping )
 	{
 		playerSprite.owner.locked = true;
 		playerSprite.owner.lockedTo = platformSprite;

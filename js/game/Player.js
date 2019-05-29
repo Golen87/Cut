@@ -289,7 +289,6 @@ Player.prototype.update = function ()
 	{
 		var drag = this.gripDir.clone()
 		drag.setMagnitude( this.dragSpeed );
-		console.log(this.sprite.body.allowGravity);
 
 		var diffX = ( drag.x - this.sprite.body.velocity.x ) / 5;
 		diffX = Math.max( Math.min( diffX, this.dragSpeed / 15 ), -this.dragSpeed / 15 );
@@ -383,11 +382,6 @@ Player.prototype.update = function ()
 		}
 		else if ( this.canAttack )
 		{
-			//if (this.locked)
-			//{
-			//	this.cancelLock();
-			//}
-
 			if ( this.isClimbing )
 			{
 				this.stopClimbing();
@@ -515,7 +509,7 @@ Player.prototype.checkLock = function ()
 
 Player.prototype.cancelLock = function ()
 {
-	this.wasLocked = true;
+	this.wasLocked = this.locked;
 	this.locked = false;
 };
 
