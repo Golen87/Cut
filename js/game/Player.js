@@ -2,7 +2,7 @@ function Player () {}
 
 Player.prototype.create = function ( group, x, y )
 {
-	this.speed = 300;
+	this.walkSpeed = 300;
 	this.dragSpeed = 550;
 	this.climbSpeed = 140;
 	this.jumpSpeed = 600;
@@ -60,7 +60,7 @@ Player.prototype.create = function ( group, x, y )
 	this.jumpCooldown = 500;
 	this.canAttack = true;
 	this.attackTimer = 0;
-	this.attackCooldown = 200;
+	this.attackCooldown = 180;
 	this.step = 0;
 
 	this.isGripping = null;
@@ -278,7 +278,7 @@ Player.prototype.update = function ()
 
 
 	if ( !this.isGripping && this.gripTimer >= 0 ) {
-		if ( this.gripTimer == 0 ) {
+		if ( this.gripTimer <= 0 ) {
 			this.releaseGrip();
 		}
 		this.gripTimer -= 1;
@@ -325,12 +325,12 @@ Player.prototype.update = function ()
 		if ( isAttacking || isCrouching )
 			p.x = 0;
 		p.y = 0;
-		p.setMagnitude( this.speed );
+		p.setMagnitude( this.walkSpeed );
 
 		if ( onFloor )
 		{
 			var diff = ( p.x - this.sprite.body.velocity.x ) / 5;
-			diff = Math.max( Math.min( diff, this.speed / 15 ), -this.speed / 15 );
+			diff = Math.max( Math.min( diff, this.walkSpeed / 15 ), -this.walkSpeed / 15 );
 			this.sprite.body.velocity.x += diff;
 		}
 		else if ( p.getMagnitude() > 0 )
@@ -452,15 +452,23 @@ Player.prototype.update = function ()
 	{
 		this.setAnimation( 'crouch' );
 	}
-	else if ( Math.abs( v.x ) > 20 )
+	else if ( Math.abs( v.x ) > 20 || p.x != 0 )
 	{
-		this.sprite.scale.x = v.x > 0 ? this.xScale : -this.xScale;
-		this.setAnimation( 'walk' );
+		var s = this.state;
 
-		if ( ( v.x > 0 && this.input.dir.x < 0 ) || ( v.x < 0 && this.input.dir.x > 0 ) )
+		this.setAnimation( 'walk' );
+		if (p.x != 0) {
+			this.sprite.scale.x = p.x > 0 ? this.xScale : -this.xScale;
+		}
+
+		if ( ( v.x > 0.5*this.walkSpeed && this.input.dir.x < 0 ) || ( v.x < -0.5*this.walkSpeed && this.input.dir.x > 0 ) )
+		{
+			if (s != 'skid')
+				Global.Audio.play('skid');
+		}
+		if ( ( v.x > 0 && this.input.dir.x < 0 ) || ( v.x < -0 && this.input.dir.x > 0 ) )
 		{
 			this.setAnimation( 'skid' );
-			Global.Audio.play('skid');
 		}
 	}
 	else
@@ -546,12 +554,13 @@ Player.prototype.attemptGrip = function (dx, dy)
 	this.gripper.x = 120 * dx * (this.sprite.scale.x > 0 ? 1 : this.sprite.scale.x < 0 ? -1 : 0);
 	this.gripper.y = 120 * dy;
 
-	this.gripTimer = 1;
+	this.gripTimer = this.attackCooldown / 60;
 };
 
 Player.prototype.gripWall = function (gripper, wall)
 {
 	if ( !this.isGripping ) {
+		Global.Audio.play('land');
 
 		// Change to movement direction
 		if ( this.gripDir.y == 0 )

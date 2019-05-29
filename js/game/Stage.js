@@ -49,7 +49,7 @@ Stage.prototype.addBalloon = function ( x, y )
 {
 	var balloon = new Entity( x*64, y*64, 'pizza', this.balloons );
 	balloon.sprite.scale.set( 1 );
-	balloon.sprite.body.setCircle( 20, 6, 8 );
+	balloon.sprite.body.setCircle( 48, 16, 8 );
 	balloon.sprite.animations.add( 'anim', [0,1,2], 6, true );
 	balloon.sprite.animations.play( 'anim' );
 	balloon.sprite.scale.set(0.5);

@@ -19,12 +19,12 @@ AudioManager.prototype.init = function ()
 	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
 	var name = 'jump';
-	var vol = 0.2 * masterVol;
+	var vol = 0.3 * masterVol;
 	this.sounds[name] = {};
 	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
 	var name = 'land';
-	var vol = 0.4 * masterVol;
+	var vol = 0.5 * masterVol;
 	this.sounds[name] = {};
 	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
@@ -50,7 +50,7 @@ AudioManager.prototype.init = function ()
 	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
 	var name = 'pop';
-	var vol = 0.4 * masterVol;
+	var vol = 0.3 * masterVol;
 	this.sounds[name] = {};
 	this.sounds[name].sound = Global.game.add.audio( name, vol );
 
